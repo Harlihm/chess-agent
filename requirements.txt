@@ -1,0 +1,5 @@
+chess
+streamlit
+ag2==0.14.0
+openai
+python-dotenv
