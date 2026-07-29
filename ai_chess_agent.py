@@ -554,7 +554,7 @@ class StreamlitIOStream:
                 fn = call.get("function") or {}
                 name = fn.get("name")
                 if name == "available_moves":
-                    parts.append("checking legal moves…")
+                    continue
                 elif name == "execute_move":
                     move = ""
                     try:
