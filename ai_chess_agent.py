@@ -38,7 +38,7 @@ BLACK_SYSTEM = (
 ROLE_META = {
     "Agent_White": {"label": "White", "tone": "white"},
     "Agent_Black": {"label": "Black", "tone": "black"},
-    "Game_Master": {"label": "Arbiter", "tone": "arbiter"},
+    "Game_Master": {"label": "Arbiter · M3 agent", "tone": "arbiter"},
 }
 
 THINK_RE = re.compile(r"<think>.*?(?:</think>|$)", re.DOTALL)
@@ -587,7 +587,7 @@ st.markdown(
     f"""
     <div class="hero">
       <h1 class="brand">AI <span>CHESS</span> BATTLE</h1>
-      <p class="tagline">Two grandmasters agents play a full game. You watch the board and their conversation in real time.</p>
+      <p class="tagline">Two grandmaster agents play a full game, refereed by an M3 Arbiter. You watch the board and their conversation in real time.</p>
       <div class="status-strip">
         {live_chip}
         <span class="chip">Powered by MiniMax-M3</span>
