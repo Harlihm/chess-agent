@@ -1,6 +1,6 @@
-# AI Chess Agent
+# Ai chess Agents
 
-Two AG2 agents play chess against each other, powered by **MiniMax-M3**. A Streamlit UI shows the board and move history. A Game Master agent validates moves and manages turns.
+Two AG2 agents play a full chess game against each other, powered by **MiniMax-M3 API**. A Streamlit UI shows the live board and agent chat. A Game Master agent validates moves and manages turns.
 
 ## Setup
 
@@ -29,12 +29,7 @@ python3 -m streamlit run ai_chess_agent.py
 
 Open the URL Streamlit prints (usually `http://localhost:8501`).
 
-### Sidebar options
-
-- **MiniMax API key** — prefilled from `.env` if set
-- **Max turns** — how many agent turns to run (5–10 is good for demos; a full game may need 200+)
-
-Click **Start Game** to let White and Black play. Agent dialogue appears in the terminal; boards appear in the app after the run finishes.
+Click **Start Game** to let White and Black play a full game. The board updates live on the left; agent conversation streams on the right.
 
 ## How it works
 
@@ -58,5 +53,7 @@ requirements.txt    # Python dependencies
 ## Notes
 
 - Never commit `.env` — it is listed in `.gitignore`.
+- Config (API key, model, base URL) comes only from `.env`.
+- A full game can use many API credits.
 - If you see a MiniMax `429` / usage limit error, upgrade your plan or buy credits.
 - On macOS, use `pip3` / `python3` if `pip` is not found.
