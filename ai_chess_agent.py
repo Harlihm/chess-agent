@@ -88,8 +88,21 @@ footer,
 }
 
 .hero {
-  animation: rise 0.7s ease both;
   margin-bottom: 1.35rem;
+}
+
+/* Entrance animations run only on the first paint, so live chip updates
+   during a match don't replay them on every move. */
+.hero.intro {
+  animation: rise 0.7s ease both;
+}
+
+.hero.intro .tagline {
+  animation: rise 0.85s ease both;
+}
+
+.hero.intro .status-strip {
+  animation: rise 1s ease both;
 }
 
 .brand {
@@ -112,7 +125,6 @@ footer,
   color: var(--ink-soft);
   font-size: 1.05rem;
   line-height: 1.45;
-  animation: rise 0.85s ease both;
 }
 
 .status-strip {
@@ -121,7 +133,6 @@ footer,
   flex-wrap: wrap;
   gap: 0.55rem;
   align-items: center;
-  animation: rise 1s ease both;
 }
 
 .chip {
@@ -577,26 +588,32 @@ class StreamlitIOStream:
         return None
 
 
+def render_hero(container, intro: bool = False) -> None:
+    live_chip = (
+        '<span class="chip live">Match in progress</span>'
+        if st.session_state.game_running
+        else '<span class="chip">Spectator mode</span>'
+    )
+    move_count = len(st.session_state.move_labels)
+    container.markdown(
+        f"""
+        <div class="hero{' intro' if intro else ''}">
+          <h1 class="brand">AI <span>CHESS</span> BATTLE</h1>
+          <p class="tagline">Two grandmaster agents play a full game, refereed by an M3 Arbiter. You watch the board and their conversation in real time.</p>
+          <div class="status-strip">
+            {live_chip}
+            <span class="chip">Powered by MiniMax-M3</span>
+            <span class="chip">{move_count} {"move" if move_count == 1 else "moves"}</span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 # --- Hero ---
-live_chip = (
-    '<span class="chip live">Match in progress</span>'
-    if st.session_state.game_running
-    else '<span class="chip">Spectator mode</span>'
-)
-st.markdown(
-    f"""
-    <div class="hero">
-      <h1 class="brand">AI <span>CHESS</span> BATTLE</h1>
-      <p class="tagline">Two grandmaster agents play a full game, refereed by an M3 Arbiter. You watch the board and their conversation in real time.</p>
-      <div class="status-strip">
-        {live_chip}
-        <span class="chip">Powered by MiniMax-M3</span>
-        <span class="chip">{len(st.session_state.move_labels)} moves</span>
-      </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+hero_slot = st.empty()
+render_hero(hero_slot, intro=True)
 
 if not st.session_state.minimax_api_key:
     st.warning("Set MINIMAX_API_KEY in your `.env` file to start.")
@@ -670,6 +687,7 @@ def execute_move(move: str) -> str:
             board_svg,
             st.session_state.move_labels,
         )
+        render_hero(hero_slot)
         return move_desc
     except ValueError:
         return f"Invalid move format: {move}. Use UCI (e.g. e2e4)."
@@ -703,6 +721,7 @@ if start:
     st.session_state.game_running = True
     st.session_state.last_status = "Match underway — White to move."
 
+    render_hero(hero_slot)
     render_board_panel(
         board_panel,
         st.session_state.last_status,
