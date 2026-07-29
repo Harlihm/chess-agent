@@ -1,4 +1,4 @@
-# Ai chess Agents
+# Ai chess Battle
 
 Two AG2 agents play a full chess game against each other, powered by **MiniMax-M3 API**. A Streamlit UI shows the live board and agent chat. A Game Master agent validates moves and manages turns.
 
